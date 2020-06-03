@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/exerc_change_settings"
+        android:orderInCategory="1"
+        android:title="Редактровать"/>
+
+    <item
+        android:id="@+id/exerc_includ_settings"
+        android:orderInCategory="2"
+        android:title="Добавить в другой комплекс"/>
+    <item
+        android:id="@+id/exerc_delete_settings"
+        android:orderInCategory="3"
+        android:title="Удалить"/>
+</menu>

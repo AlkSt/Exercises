@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">My exercises</string>
+    <string name="title_activity_collection">CollectionActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string-array name="front_button_name">
+        <item>frontBit</item>
+        <item>pressBit</item>
+    </string-array>
+
+    <string-array name="button_text">
+        <item>Упражнения на бицепс</item>
+        <item>Упражнения на пресс</item>
+    </string-array>
+
+    <!--    <string-array name="button_name">-->
+    <!--        <item > @string </item>-->
+    <!--    </string-array>-->
+
+</resources>

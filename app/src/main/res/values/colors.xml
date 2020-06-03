@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F06114</color>
+    <color name="colorPrimaryDark">#301304</color>
+    <color name="colorAccent">#FF5900</color>
+    <color name="blueButton">#2611dd</color>
+    <color name="radButton">#DD1111</color>
+    <color name="yellowButton">#ffee00</color>
+    <color name="greenButton">#33FF00</color>
+    <color name="seaColor">#00fff7</color>
+    <color name="whiteButton">#FFFFFF</color>
+</resources>
