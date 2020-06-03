@@ -79,13 +79,15 @@ public class ExerciseActivity extends AppCompatActivity {
             startTime = exercise.time;
             String actorPhotoUrl = exercise.imageUrl;//добавление фото
             exenImageView = findViewById(R.id.exe_picture_view);
-            if (exercise.image==null)
-            { Picasso.with(getBaseContext())
+            if (exercise.image==null){
+            {if(actorPhotoUrl.length()!=0) {
+                Picasso.with(getBaseContext())
                         .load(actorPhotoUrl)
                         .resize(500, 500)
                         .centerInside()
                         .into(exenImageView);
-            exenImageView.setVisibility(actorPhotoUrl != null ? View.VISIBLE : View.GONE);}
+            }
+            exenImageView.setVisibility(actorPhotoUrl != null ? View.VISIBLE : View.GONE);}}
             else exenImageView.setImageBitmap(exercise.image);
         }
 

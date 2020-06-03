@@ -83,12 +83,14 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.E
             _exeNameTextView.setText(exercise.name);
             String actorPhotoUrl = exercise.imageUrl;
             if(exercise.image==null)
-            {Picasso.with(itemView.getContext())
+            {
+                if (actorPhotoUrl.length()!=0)
+                {Picasso.with(itemView.getContext())
                     .load(actorPhotoUrl)
                     .resize(500, 500)
                     .centerInside()
                     .into(_exeImageView);
-            _exeImageView.setVisibility(actorPhotoUrl != null ? View.VISIBLE : View.GONE);}
+            _exeImageView.setVisibility(actorPhotoUrl != null ? View.VISIBLE : View.GONE);}}
             else _exeImageView.setImageBitmap(exercise.image);
             //из интернета
             //Picasso.with(itemView.getContext()).load(theaterPhotoUrl).into(theaterImageView);
