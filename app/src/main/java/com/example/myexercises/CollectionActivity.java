@@ -62,7 +62,7 @@ public class CollectionActivity extends AppCompatActivity {
             public void onItemClick(Exercise item) {
                 Intent intent = new Intent(getApplicationContext(), ExerciseActivity.class);
                 intent.putExtra("exercise", item.id);//отправлять надо айди колллекции
-
+                intent.putExtra("cols",collection.id);
                 startActivity(intent);
             }
         });

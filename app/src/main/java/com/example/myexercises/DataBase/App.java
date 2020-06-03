@@ -80,6 +80,17 @@ public class App extends Application {
         return  findCol;
     }
 
+     public void DeleteEl(Exercise exercise, int col_id)
+     {
+         database.exerciseDao().delete(exercise);
+         database.callexDao().delete(findLink(exercise.id,col_id));
+     }
+
+     public CallExec findLink(int ex_id, int col_id)
+     {
+        return database.callexDao().findLink(col_id,ex_id);
+     }
+
     public List<Collection> getAllCollection() {
         List<Collection> addCol = database.collectionDao().getAll();
         return addCol;
@@ -109,6 +120,8 @@ public class App extends Application {
             new_col = col;
         }
     }
+
+
 
     class GetTask extends AsyncTask<Integer, Void, Exercise> {
         Exercise new_col;

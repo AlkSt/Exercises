@@ -20,13 +20,16 @@ import android.widget.Toast;
 
 import com.example.myexercises.DataBase.App;
 import com.example.myexercises.DataBase.Exercise;
+import com.example.myexercises.dialog.DeleteDialog;
+import com.example.myexercises.dialog.NameDialog;
 import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class ExerciseActivity extends AppCompatActivity {
+public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.DeleteDialogListener {
     Exercise exercise;
+    int colID;
     //таймер
     Button timerButton;
     long startTime = 60000;
@@ -52,9 +55,10 @@ public class ExerciseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_exercise);
         Bundle intent = getIntent().getExtras();
         int idin = (int)intent.getSerializable("exercise");
+        colID =(int)intent.getSerializable("cols");
         if(idin!=0)
         exercise =App.getInstance().getElement(idin);//(Exercise) intent.getSerializable("exercise");
-        else exercise = new Exercise("Добавленный","",(int)intent.getSerializable("cols"));
+        else exercise = new Exercise("Добавленный","",colID);
         String name_collection = exercise.name;
         name_text = findViewById(R.id.nameEdit);
         des_text = findViewById(R.id.descriptEdit);
@@ -164,7 +168,9 @@ public class ExerciseActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.exerc_includ_settings)
             return true;
         if (item.getItemId() == R.id.exerc_delete_settings)
-            return true;
+        {
+            new DeleteDialog().show(getSupportFragmentManager(), "collectname");
+            return true;}
 
         // if(item.getItemId() == R.id.home)//не такой айдишник у кнопки назад
         {
@@ -195,6 +201,12 @@ public class ExerciseActivity extends AppCompatActivity {
                     }
                 }
         }
+    }
+
+    @Override
+    public void onDialogPositiveClick() {
+        App.getInstance().DeleteEl(exercise,colID);
+        finish();
     }
 
 

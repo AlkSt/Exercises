@@ -37,6 +37,8 @@
         android:layout_marginTop="7dp"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/descriptEdit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/exe_picture_view"
         tools:text="Загрузить изображение" />
 
@@ -82,10 +84,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="Количество"
         android:inputType="number"
         app:layout_constraintBottom_toTopOf="@+id/timer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/uploadButton"
         app:layout_constraintVertical_bias="0.924" />
@@ -95,6 +97,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="Время"
         android:inputType="time"
         app:layout_constraintBottom_toTopOf="@+id/complexset"
         app:layout_constraintEnd_toEndOf="parent"
