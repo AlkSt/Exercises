@@ -16,8 +16,12 @@ public interface LinkDao {
 //    @Query("SELECT * FROM callexec")
 //        List<Collection> getAll();
 //   // Flowable<List<CallExec>> getAll();
+    @Query("SELECT COUNT(*) FROM callexec WHERE ExerciseID=:id")
+    int getCount(int id);
+
     @Query("SELECT * FROM callexec WHERE CollectID =:cid AND ExerciseID=:exid")
     CallExec findLink(int cid,int exid);
+
     @Query("SELECT * FROM callexec WHERE CollectID =:id")
     List<CallExec> getAlCol(int id);
 

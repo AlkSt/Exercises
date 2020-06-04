@@ -3,9 +3,9 @@
     <item
     android:id="@+id/collect_add_settings"
     android:orderInCategory="1"
-    android:title="Добавить"/>
+    android:title="Добавить упражнение"/>
     <item
         android:id="@+id/collect_delete_settings"
         android:orderInCategory="2"
-        android:title="Удалить"/>
+        android:title="Удалить комлекс"/>
 </menu>

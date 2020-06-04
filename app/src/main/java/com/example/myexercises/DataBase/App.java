@@ -95,6 +95,22 @@ public class App extends Application {
         List<Collection> addCol = database.collectionDao().getAll();
         return addCol;
     }
+
+    public void DeleteCol(Collection col)
+    {
+        int col_id= (int)col.id;
+        database.collectionDao().delete(col);
+        List<CallExec> caldel = database.callexDao().getAlCol(col_id);
+        for(CallExec pair: caldel)
+        {
+            int count = database.callexDao().getCount(pair.ExerciseID);
+            if(count<2) {Exercise ex = database.exerciseDao().getById(pair.ExerciseID); database.exerciseDao().delete(ex); }
+            database.callexDao().delete(pair);
+        }
+    }
+
+
+
     class InsertElTask extends AsyncTask<Void, Void, Void> {
         Exercise new_ex;
         @Override
@@ -120,8 +136,6 @@ public class App extends Application {
             new_col = col;
         }
     }
-
-
 
     class GetTask extends AsyncTask<Integer, Void, Exercise> {
         Exercise new_col;

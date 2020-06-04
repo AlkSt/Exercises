@@ -33,10 +33,10 @@ public class NameDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Новый комплекс");  // заголовок
         // builder.setMessage("Введите название"); // сообщение
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final LayoutInflater inflater = getActivity().getLayoutInflater();
         builder.setView(inflater.inflate(R.layout.collection_name_layout, null))
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

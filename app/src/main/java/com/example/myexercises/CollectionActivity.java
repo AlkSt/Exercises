@@ -17,13 +17,14 @@ import android.widget.Toast;
 import com.example.myexercises.DataBase.App;
 import com.example.myexercises.DataBase.Collection;
 import com.example.myexercises.DataBase.Exercise;
+import com.example.myexercises.dialog.DeleteDialog;
 
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CollectionActivity extends AppCompatActivity {
+public class CollectionActivity extends AppCompatActivity implements DeleteDialog.DeleteDialogListener {
 
     private TextView _toolbarTextView;
     private RecyclerView _exeRecyclerView;
@@ -91,7 +92,9 @@ public class CollectionActivity extends AppCompatActivity {
             return true;
         }
         if (item.getItemId()== R.id.collect_delete_settings)
-            return true;
+        {
+            new DeleteDialog().show(getSupportFragmentManager(), "collectnamet");
+            return true;}
 
        // if(item.getItemId() == R.id.home)//не такой айдишник у кнопки назад
         {
@@ -103,4 +106,9 @@ public class CollectionActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onDialogPositiveClick() {
+        App.getInstance().DeleteCol(collection);
+        finish();
+    }
 }
