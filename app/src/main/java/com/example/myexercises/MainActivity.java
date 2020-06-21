@@ -67,6 +67,13 @@ public class MainActivity extends AppCompatActivity implements NameDialog.NameDi
         setStartExerciseData(getBaseContext());
     }
 
+//    @Override
+//    protected void onResume()
+//    {
+//        super.onResume();
+//        getViewModelStore();
+//        setStartExerciseData(getBaseContext());
+//   }
 
 //длительное касание экрана - добавляет точку с коллекцией
     private View.OnTouchListener iNeedLongTouch = new View.OnTouchListener() {
@@ -219,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements NameDialog.NameDi
     }
 
     @Override// Пользователь коснулся положительной кнопки диалога
-    public void onDialogPositiveClick(boolean need, String s) {
+    public void onDialogPositiveClick(int color, String s) {
         create = true;
         CollectionName = s;
         Button b = new Button(getBaseContext());//(v.getContext());

@@ -54,12 +54,12 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
         Bundle intent = getIntent().getExtras();
-        int idin = (int)intent.getSerializable("exercise");
-        colID =(int)intent.getSerializable("cols");
-        if(idin!=0)
-        exercise =App.getInstance().getElement(idin);//(Exercise) intent.getSerializable("exercise");
-        else exercise = new Exercise("Добавленный","",colID);
-        String name_collection = exercise.name;
+        int idin = (int) intent.getSerializable("exercise");
+        colID = (int) intent.getSerializable("cols");
+        if (idin != 0)
+            exercise = App.getInstance().getElement(idin);//(Exercise) intent.getSerializable("exercise");
+        else exercise = new Exercise("Добавленный", "", colID);
+        String name_ex = exercise.name;
         name_text = findViewById(R.id.nameEdit);
         des_text = findViewById(R.id.descriptEdit);
         count = findViewById(R.id.count_edit);
@@ -67,32 +67,11 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
         uploadChange = findViewById(R.id.complexset);
         timerButton = findViewById(R.id.timer);
         loadImg = findViewById(R.id.uploadButton);
-        if (name_collection.equals("Добавленный"))//будем создавать с нуля, то есть все поля видимы и активны кроме запуска таймера
-                   changeMod();
- else//открыто для просмотра
+        if (name_ex.equals("Добавленный"))//будем создавать с нуля, то есть все поля видимы и активны кроме запуска таймера
+            changeMod();
+        else//открыто для просмотра
         {
-            uploadChange.setVisibility(View.INVISIBLE);
-            loadImg.setVisibility(View.INVISIBLE);
-            time.setVisibility(View.INVISIBLE);
-            if (exercise.repeat == 0) count.setVisibility(View.INVISIBLE);
-            else count.setRawInputType(0x00000000);
-            name_text.setText(name_collection);
-            //блокировка текстовых полей(имя и описание)
-            name_text.setRawInputType(0x00000000);//0x10000000
-            des_text.setRawInputType(0x00000000);//0x10000000
-            startTime = exercise.time;
-            String actorPhotoUrl = exercise.imageUrl;//добавление фото
-            exenImageView = findViewById(R.id.exe_picture_view);
-            if (exercise.image==null){
-            {if(actorPhotoUrl.length()!=0) {
-                Picasso.with(getBaseContext())
-                        .load(actorPhotoUrl)
-                        .resize(500, 500)
-                        .centerInside()
-                        .into(exenImageView);
-            }
-            exenImageView.setVisibility(actorPhotoUrl != null ? View.VISIBLE : View.GONE);}}
-            else exenImageView.setImageBitmap(exercise.image);
+            lookMod();
         }
 
 
@@ -102,7 +81,6 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
             public void onClick(View v) {
                 if (currentTime < 1000) currentTime = startTime;
                 ExerciseTimer countDownTimer = new ExerciseTimer(currentTime, 10);
-                ;
                 if (!timerHasStarted) {
                     countDownTimer.start();
                     timerHasStarted = true;
@@ -111,6 +89,7 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
                     countDownTimer.cancel();
                     timerHasStarted = false;
                 }
+
             }
         });
 
@@ -132,12 +111,48 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
                 exercise.desctiption = des_text.getText().toString();
                 exercise.name = name_text.getText().toString();
                 exercise.image = selectedImage;
+                if (time.getText().toString().length() != 0) {
+                    exercise.time = Integer.parseInt(time.getText().toString());
+                    timerButton.setText((exercise.time));//вылетает
+                }
+                if (count.getText().toString().length() != 0)
+                    exercise.repeat = Integer.parseInt(count.getText().toString());
                 if (App.getInstance().getElement(exercise.id) != null)
                     App.getInstance().UpdateEl(exercise);
                 else
                     App.getInstance().InsertEl(exercise, exercise.col);//col дает номер колекци в которую идет добавление
+                lookMod();
             }
         });
+    }
+
+    private  void lookMod()
+    {
+        uploadChange.setVisibility(View.INVISIBLE);
+        loadImg.setVisibility(View.INVISIBLE);
+        time.setVisibility(View.INVISIBLE);
+        if (exercise.repeat == 0) count.setVisibility(View.INVISIBLE);
+        else count.setRawInputType(0x00000000);
+        if(exercise.time==0) timerButton.setVisibility(View.INVISIBLE);
+        else{startTime = exercise.time; timerButton.setVisibility(View.VISIBLE);}
+        name_text.setText(exercise.name);
+        //блокировка текстовых полей(имя и описание)
+        name_text.setRawInputType(0x00000000);//0x10000000
+        des_text.setRawInputType(0x00000000);//0x10000000
+        startTime = exercise.time;
+        String actorPhotoUrl = exercise.imageUrl;//добавление фото
+        exenImageView = findViewById(R.id.exe_picture_view);
+        if (exercise.image==null){
+            {if(actorPhotoUrl.length()!=0) {
+                Picasso.with(getBaseContext())
+                        .load(actorPhotoUrl)
+                        .resize(500, 500)
+                        .centerInside()
+                        .into(exenImageView);
+            }
+                exenImageView.setVisibility(actorPhotoUrl != null ? View.VISIBLE : View.GONE);}}
+        else exenImageView.setImageBitmap(exercise.image);
+
     }
 
     private void changeMod() {
@@ -220,6 +235,7 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
         public void onFinish() {
             timerButton.setText(String.valueOf("Поехали!"));
             cancel();
+
         }
 
         @Override

@@ -13,7 +13,7 @@
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="5dp"
         android:fontFamily="sans-serif"
-        android:hint="Введите название"
+        android:hint="Добавленное"
         android:inputType="text" />
 
     <LinearLayout
