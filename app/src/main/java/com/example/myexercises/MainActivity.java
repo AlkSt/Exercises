@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements NameDialog.NameDi
     public Boolean create = false;
     public String CollectionName = "";
 
+    List<Button> allbutton = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //AppPoints = new ArrayList<Button>();
@@ -67,13 +68,27 @@ public class MainActivity extends AppCompatActivity implements NameDialog.NameDi
         setStartExerciseData(getBaseContext());
     }
 
-//    @Override
-//    protected void onResume()
-//    {
-//        super.onResume();
-//        getViewModelStore();
-//        setStartExerciseData(getBaseContext());
-//   }
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        getViewModelStore();
+        Boolean coincidence = false;//совпадение
+        ArrayList<View> allButtons;
+        //все  кнопки в лейауте достать
+        allButtons =  ((ConstraintLayout) findViewById(R.id.backLayout)).getTouchables();
+        List<Collection> collections = App.getInstance().getAllCollection();
+        if(allButtons.size() > collections.size()) {
+            for (View b : allButtons) {
+                for (Collection col : collections) { int t = b.getId();
+                    if (b.getId() == col.button_id) {coincidence = true;break;}
+                } if(!coincidence)
+                    b.setVisibility(View.GONE);
+                coincidence = false;
+            }
+        }
+
+    }
 
 //длительное касание экрана - добавляет точку с коллекцией
     private View.OnTouchListener iNeedLongTouch = new View.OnTouchListener() {
@@ -171,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements NameDialog.NameDi
         String[] ButText = getResources().getStringArray(R.array.button_text);//имена кнопок
         for (String item : ResButName) {//добавление стандартных кнопок  их слушателей
         Button b = new Button(context);
+        int n = b.getId();
         b.setId(x[i]);//айди
         b.setText(ButText[i]);//текст
         Collection col = new Collection(ButText[i], x[i],y[i]);//инициализаця коллекции
@@ -181,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements NameDialog.NameDi
         ColId = App.getInstance().InsertCol(col);//в БД
         colID.add(ColId);//список начальных каллекций
         myLayout.addView(b);//добавление кнопки на экран
+        allbutton.add(b);
         set.clone(myLayout);
         setConnectSettings(b, x[i], y[i], wight, hight);
         set.applyTo(myLayout);
@@ -203,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements NameDialog.NameDi
                 b.setOnTouchListener(move_otl);
                 //добавление в базу где то должно быт
                 myLayout.addView(b);//добавление кнопки на экран
+                allbutton.add(b);
                 set.clone(myLayout);
                 setConnectSettings(b, collection.button_id,collection.button_y, wight, hight);
                 set.applyTo(myLayout);

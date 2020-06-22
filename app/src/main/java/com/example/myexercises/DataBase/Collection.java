@@ -17,7 +17,7 @@ public class Collection implements Serializable {
     public Collection() {
         id=1;
         name = "fun";
-        button_name="21231";
+        button_name="b21231";
     }
 
     public Collection( String _name, int _button_id, int _button_y) {
