@@ -131,6 +131,7 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
         uploadChange.setVisibility(View.INVISIBLE);
         loadImg.setVisibility(View.INVISIBLE);
         time.setVisibility(View.INVISIBLE);
+       // if ( exercise.repeat >0) count.setText(exercise.repeat);
         if (exercise.repeat == 0) count.setVisibility(View.INVISIBLE);
         else count.setRawInputType(0x00000000);
         if(exercise.time==0) timerButton.setVisibility(View.INVISIBLE);
@@ -138,6 +139,8 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
         name_text.setText(exercise.name);
         //блокировка текстовых полей(имя и описание)
         name_text.setRawInputType(0x00000000);//0x10000000
+        //if(exercise.desctiption != null)
+       // des_text.setText(exercise.desctiption);
         des_text.setRawInputType(0x00000000);//0x10000000
         startTime = exercise.time;
         String actorPhotoUrl = exercise.imageUrl;//добавление фото
@@ -186,13 +189,7 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
         {
             new DeleteDialog().show(getSupportFragmentManager(), "collectname");
             return true;}
-
-        // if(item.getItemId() == R.id.home)//не такой айдишник у кнопки назад
-        {
-            //обработать сохранение то го что тут происходило?
-            this.finish();
-        }
-        Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();//выводит кружочек с выбраным действием внизу экрана
+        //Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();//выводит кружочек с выбраным действием внизу экрана
         return super.onOptionsItemSelected(item);
     }
 

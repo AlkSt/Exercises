@@ -1,28 +1,21 @@
 package com.example.myexercises;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Database;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myexercises.DataBase.App;
 import com.example.myexercises.DataBase.Collection;
 import com.example.myexercises.DataBase.Exercise;
 import com.example.myexercises.dialog.DeleteDialog;
 
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CollectionActivity extends AppCompatActivity implements DeleteDialog.DeleteDialogListener {
@@ -52,13 +45,13 @@ public class CollectionActivity extends AppCompatActivity implements DeleteDialo
         _toolbarTextView = findViewById(R.id.toolbar_text_view);
         _toolbarTextView.setText(name_collection);
         _exeRecyclerView = findViewById(R.id.actors_recycler_view);
-
-        exens = App.getInstance().getAllElement();
-       // exens = new ArrayList<>();
         exens = App.getInstance().getElemInCol(collection.id);
-       // exens.add(new Exercise("Планка", "https://ferrum-body.ru/wp-content/uploads/2017/02/ibj0Zj.jpg"));
-        //exens.add(new Exercise("Скручивания", "https://cross.expert/wp-content/uploads/2017/09/kosye-skruchivaniya.jpg"));
+       adapterSettings();
 
+    }
+
+    private void adapterSettings()
+    {
         _exeAdapter = new CollectionAdapter(getApplicationContext(), new CollectionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Exercise item) {
@@ -71,7 +64,13 @@ public class CollectionActivity extends AppCompatActivity implements DeleteDialo
         _exeAdapter.setItems(exens);
         _exeRecyclerView.setLayoutManager(new GridLayoutManager(currentActivity, 2));
         _exeRecyclerView.setAdapter(_exeAdapter);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        exens = App.getInstance().getElemInCol(collection.id);
+        adapterSettings();
     }
 
     @Override
@@ -97,16 +96,11 @@ public class CollectionActivity extends AppCompatActivity implements DeleteDialo
             new DeleteDialog().show(getSupportFragmentManager(), "collectnamet");
             return true;}
 
-       // if(item.getItemId() == R.id.home)//не такой айдишник у кнопки назад
-        {
-            //обработать сохранение то го что тут происходило?
-            this.finish();
-        }
         //Toast.makeText(this,item.getTitle(),Toast.LENGTH_SHORT).show();//выводит кружочек с выбраным действием внизу экрана
         return super.onOptionsItemSelected(item);
     }
 
-
+//подтверждено удаление комплекса
     @Override
     public void onDialogPositiveClick() {
         App.getInstance().DeleteCol(collection);
