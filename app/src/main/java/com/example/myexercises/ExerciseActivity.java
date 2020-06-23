@@ -1,6 +1,7 @@
 package com.example.myexercises;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.os.CountDownTimer;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,13 +28,14 @@ import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 
 public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.DeleteDialogListener {
     Exercise exercise;
     int colID;
     //таймер
     Button timerButton;
-    long startTime = 60000;
+    long startTime = 0;
     long currentTime = startTime;
     boolean timerHasStarted = false;
     //картинка
@@ -56,9 +59,9 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
         Bundle intent = getIntent().getExtras();
         int idin = (int) intent.getSerializable("exercise");
         colID = (int) intent.getSerializable("cols");
-        if (idin != 0)
+        if (idin != 0)//нахождение элемента по айди
             exercise = App.getInstance().getElement(idin);//(Exercise) intent.getSerializable("exercise");
-        else exercise = new Exercise("Добавленный", "", colID);
+        else exercise = new Exercise("Добавленный", "", colID);//добавление нового в коллекцию
         String name_ex = exercise.name;
         name_text = findViewById(R.id.nameEdit);
         des_text = findViewById(R.id.descriptEdit);
@@ -70,24 +73,24 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
         if (name_ex.equals("Добавленный"))//будем создавать с нуля, то есть все поля видимы и активны кроме запуска таймера
             changeMod();
         else//открыто для просмотра
-        {
             lookMod();
-        }
 
 
 //получили кнопку с таймером и привязали слушателя
-        timerButton.setOnClickListener(new View.OnClickListener() {
+        timerButton.setOnClickListener(new View.OnClickListener() {   ExerciseTimer countDownTimer ;
             @Override
             public void onClick(View v) {
                 if (currentTime < 1000) currentTime = startTime;
-                ExerciseTimer countDownTimer = new ExerciseTimer(currentTime, 10);
+
                 if (!timerHasStarted) {
+                    countDownTimer = new ExerciseTimer(currentTime, 10);
                     countDownTimer.start();
                     timerHasStarted = true;
                 } else {///ни чего не работает он продоллжает отсчет ни смотря ни на что
-                    timerButton.setText(String.valueOf("Поехали!"));
+                    //timerButton.setText(String.valueOf("Поехали!"));
                     countDownTimer.cancel();
                     timerHasStarted = false;
+                    //timerButton.setText(String.valueOf(startTime+""));
                 }
 
             }
@@ -95,6 +98,7 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
 
 //при нажатии на загрузку фотографии
         exenImageView = findViewById(R.id.exe_picture_view);
+        exenImageView.setOnTouchListener(move_otl);
         loadImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +117,8 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
                 exercise.image = selectedImage;
                 if (time.getText().toString().length() != 0) {
                     exercise.time = Integer.parseInt(time.getText().toString());
-                    timerButton.setText((exercise.time));//вылетает
+                    timerButton.setText((exercise.time+""));//вылетает
+                    startTime = exercise.time*1000;
                 }
                 if (count.getText().toString().length() != 0)
                     exercise.repeat = Integer.parseInt(count.getText().toString());
@@ -126,23 +131,23 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
         });
     }
 
-    private  void lookMod()
+    private   void lookMod()
     {
         uploadChange.setVisibility(View.INVISIBLE);
         loadImg.setVisibility(View.INVISIBLE);
         time.setVisibility(View.INVISIBLE);
-       // if ( exercise.repeat >0) count.setText(exercise.repeat);
+        if ( exercise.repeat >0) count.setText(exercise.repeat+"");
         if (exercise.repeat == 0) count.setVisibility(View.INVISIBLE);
         else count.setRawInputType(0x00000000);
         if(exercise.time==0) timerButton.setVisibility(View.INVISIBLE);
-        else{startTime = exercise.time; timerButton.setVisibility(View.VISIBLE);}
+        else{startTime = exercise.time*1000; timerButton.setVisibility(View.VISIBLE);}
         name_text.setText(exercise.name);
         //блокировка текстовых полей(имя и описание)
         name_text.setRawInputType(0x00000000);//0x10000000
-        //if(exercise.desctiption != null)
-       // des_text.setText(exercise.desctiption);
+        if(exercise.desctiption != null)
+        des_text.setText(exercise.desctiption);
         des_text.setRawInputType(0x00000000);//0x10000000
-        startTime = exercise.time;
+       // startTime = exercise.time;
         String actorPhotoUrl = exercise.imageUrl;//добавление фото
         exenImageView = findViewById(R.id.exe_picture_view);
         if (exercise.image==null){
@@ -168,6 +173,7 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
         count.setRawInputType(0x10000000);//0x10000000
         time.setVisibility(View.VISIBLE);
         time.setRawInputType(0x10000000);//0x10000000
+        if(exercise.time>0) time.setText(exercise.time+"");
     }
 
 
@@ -230,7 +236,7 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
 
         @Override
         public void onFinish() {
-            timerButton.setText(String.valueOf("Поехали!"));
+            timerButton.setText(String.valueOf(exercise.time+""));
             cancel();
 
         }
@@ -243,5 +249,46 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
         }
 
     }
+
+    float startX , finX;
+    float startY ,finY;
+    View.OnTouchListener move_otl = new View.OnTouchListener() {
+        private float mx;
+        private float my;
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+             float x = event.getX();
+             float y = event.getY();
+            int t =v.getId();
+            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_DOWN:
+                    startX =x; startY =y;
+                    break;
+                case MotionEvent.ACTION_UP:
+                    finX =x; finY = y;
+                    break;
+            }
+            List<Exercise> exerciseList;
+            if(finX>0 && startX-finX>400)//вперед
+            {
+                exerciseList = App.getInstance().getElemInCol(colID);
+                for(int i =0; i<exerciseList.size();i++)
+                    if(exerciseList.get(i).id == exercise.id)
+                    {exercise = exerciseList.get((i+1)%exerciseList.size());break;}
+                lookMod();
+            }
+            else if (finX>0 && finX-startX>400)//назад
+            {
+                exerciseList = App.getInstance().getElemInCol(colID);
+                for(int i =0; i<exerciseList.size();i++)
+                if(exerciseList.get(i).id == exercise.id)
+                {exercise = exerciseList.get((i-1+exerciseList.size())%exerciseList.size());break;}
+                lookMod();
+            }
+            Toast.makeText(getBaseContext(),startX+" "+ finX,Toast.LENGTH_SHORT).show();
+            return true;
+        }
+    };
+
 
 }
