@@ -144,16 +144,8 @@ public class MainActivity extends AppCompatActivity implements NameDialog.NameDi
     };
 
 
-    //он вообще фурыкает??
-    View.OnLongClickListener long_ocl = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-//        Intent intent = new Intent(getApplicationContext(), ExerciseActivity.class);
-//        intent.putExtra("exercise", "dsikj");//отправлять надо айди колллекции
-//        startActivity(intent);
-            return false;
-        }
-    };
+
+
 
 //при нажатии на кнопку отрывает CollectionActivity
     View.OnClickListener ocl = new View.OnClickListener() {

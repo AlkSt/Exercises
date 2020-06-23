@@ -189,8 +189,6 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
             changeMod();
             return true;
         }
-        if (item.getItemId() == R.id.exerc_includ_settings)
-            return true;
         if (item.getItemId() == R.id.exerc_delete_settings)
         {
             new DeleteDialog().show(getSupportFragmentManager(), "collectname");

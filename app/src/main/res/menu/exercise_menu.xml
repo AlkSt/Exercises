@@ -5,12 +5,9 @@
         android:orderInCategory="1"
         android:title="Редактровать"/>
 
-    <item
-        android:id="@+id/exerc_includ_settings"
-        android:orderInCategory="2"
-        android:title="Добавить в другой комплекс"/>
+
     <item
         android:id="@+id/exerc_delete_settings"
-        android:orderInCategory="3"
+        android:orderInCategory="2"
         android:title="Удалить"/>
 </menu>
