@@ -283,7 +283,7 @@ public class ExerciseActivity extends AppCompatActivity implements DeleteDialog.
                 {exercise = exerciseList.get((i-1+exerciseList.size())%exerciseList.size());break;}
                 lookMod();
             }
-            Toast.makeText(getBaseContext(),startX+" "+ finX,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getBaseContext(),startX+" "+ finX,Toast.LENGTH_SHORT).show();
             return true;
         }
     };
